@@ -1,0 +1,258 @@
+@use 'tokens' as *;
+
+// Toggle
+
+.cdo-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: v('toggle-font-family');
+  font-size: calc(#{v('toggle-font-size')} * var(--_cdo-scale, 1));
+  color: v('toggle-text');
+}
+
+.cdo-toggle--fixed {
+  position: fixed;
+  z-index: v('toggle-z-index');
+  padding: 6px;
+  background: v('toggle-bg');
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.cdo-toggle--top-left {
+  top: v('toggle-offset');
+  left: v('toggle-offset');
+}
+.cdo-toggle--top-right {
+  top: v('toggle-offset');
+  right: v('toggle-offset');
+}
+.cdo-toggle--bottom-left {
+  bottom: v('toggle-offset');
+  left: v('toggle-offset');
+}
+.cdo-toggle--bottom-right {
+  bottom: v('toggle-offset');
+  right: v('toggle-offset');
+}
+
+.cdo-toggle__switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: v('toggle-padding');
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: v('toggle-bg');
+  border: 0;
+  border-radius: v('toggle-radius');
+  cursor: pointer;
+  transition: background 140ms ease;
+
+  &:hover {
+    background: v('toggle-bg-hover');
+  }
+
+  &:focus-visible {
+    outline: 2px solid v('toggle-accent');
+    outline-offset: 2px;
+  }
+}
+
+.cdo-toggle__label {
+  flex: 1 0 auto;
+}
+
+.cdo-toggle__track {
+  position: relative;
+  flex-shrink: 0;
+  width: calc(34px * var(--_cdo-scale, 1));
+  height: calc(18px * var(--_cdo-scale, 1));
+  background: v('toggle-track-off');
+  border-radius: calc(9px * var(--_cdo-scale, 1));
+  transition: background 140ms ease;
+}
+
+.cdo-toggle__thumb {
+  position: absolute;
+  top: calc(2px * var(--_cdo-scale, 1));
+  left: calc(2px * var(--_cdo-scale, 1));
+  width: calc(14px * var(--_cdo-scale, 1));
+  height: calc(14px * var(--_cdo-scale, 1));
+  background: v('toggle-thumb-off');
+  border-radius: 50%;
+  transition:
+    left 140ms ease,
+    background 140ms ease;
+}
+
+.cdo-toggle--on {
+  .cdo-toggle__switch {
+    color: v('toggle-accent');
+  }
+
+  .cdo-toggle__track {
+    background: v('toggle-accent');
+  }
+
+  .cdo-toggle__thumb {
+    left: calc(18px * var(--_cdo-scale, 1));
+    background: v('toggle-thumb-on');
+  }
+}
+
+.cdo-toggle__desc {
+  margin: 0;
+  max-width: 36ch;
+  padding: 0 12px 6px;
+  font-size: 0.86em;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+.cdo-toggle__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 12px 4px;
+  font-size: 0.86em;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+    accent-color: v('toggle-accent');
+  }
+}
+
+// Accessibility section
+
+.cdo-a11y {
+  margin: 2px 0 0;
+  padding: 0 12px 6px;
+  font-size: 0.86em;
+}
+
+.cdo-a11y__summary {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 0;
+  gap: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  // A chevron that turns when the section opens.
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0.5em;
+    height: 0.5em;
+    margin: 0 0.15em 0 0.1em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 140ms ease;
+  }
+
+  &:focus-visible {
+    outline: 2px solid v('toggle-accent');
+    outline-offset: 2px;
+  }
+}
+
+.cdo-a11y[open] > .cdo-a11y__summary::before {
+  transform: rotate(45deg);
+}
+
+.cdo-a11y__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 36ch;
+  padding-top: 6px;
+}
+
+.cdo-a11y__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  margin: 0 0 4px;
+  padding: 0;
+  border: 0;
+
+  legend {
+    width: 100%;
+    padding: 0 0 2px;
+    font-weight: 700;
+  }
+}
+
+.cdo-a11y__choice,
+.cdo-a11y__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+    accent-color: v('toggle-accent');
+
+    &:focus-visible {
+      outline: 2px solid v('toggle-accent');
+      outline-offset: 2px;
+    }
+  }
+}
+
+.cdo-a11y__hint {
+  margin: 0 0 0 24px;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+.cdo-toggle--contrast {
+  .cdo-toggle__desc,
+  .cdo-a11y__hint {
+    opacity: 1;
+  }
+
+  .cdo-toggle__track {
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+}
+
+// Windows High Contrast and other forced-colour modes replace colours with system ones.
+// Borders keep the switch visible.
+@media (forced-colors: active) {
+  .cdo-toggle--fixed,
+  .cdo-toggle__switch {
+    border: 1px solid CanvasText;
+  }
+
+  .cdo-toggle__track {
+    border: 1px solid ButtonText;
+  }
+
+  .cdo-toggle__thumb {
+    background: ButtonText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cdo-toggle__switch,
+  .cdo-toggle__track,
+  .cdo-toggle__thumb,
+  .cdo-a11y__summary::before {
+    transition: none;
+  }
+}

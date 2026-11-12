@@ -1,0 +1,132 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <p class="eyebrow">Open source &middot; Angular &middot; Dev tool</p>
+      <h1>Component Details Overlay</h1>
+      <p class="lede">
+        Switch it on and every tagged component on the page shows its name as it is written in code.
+        Use it to check a live page against a design file, and to find elements built outside your
+        component library.
+      </p>
+      <p class="lede lede--small">
+        <a [href]="reactUrl" target="_blank" rel="noreferrer"
+          >Using React? Get the React version.</a
+        >
+      </p>
+    </div>
+    <div class="page__controls">
+      <a class="btn btn--secondary btn--link" href="#usage">Usage guide</a>
+      <a class="btn btn--secondary btn--link" [href]="repoUrl" target="_blank" rel="noreferrer"
+        >View on GitHub</a
+      >
+    </div>
+  </header>
+
+  <div class="stats">
+    <app-stat-card label="Works with" value="Angular 22" />
+    <app-stat-card label="Badge text contrast" value="4.5:1" />
+    <app-stat-card label="In production builds" value="Off" />
+  </div>
+
+  <!-- Hand-built banner with no tag. With the overlay on it has no badge, which is how an
+       audit spots elements built outside the component set. -->
+  <div class="promo">
+    This banner is hand-built and untagged, so it gets no badge. That is how an audit finds elements
+    built outside your component set.
+  </div>
+
+  <app-card title="What the overlay shows">
+    <p class="prose">
+      Each tagged component gets a dashed outline and a badge with its name. Nested components get
+      different colours, so you can see what sits inside what. The overlay draws on its own layer
+      and ignores the mouse, so clicks, scrolling and layout behave as they did before.
+    </p>
+    <p class="prose">
+      Hold <kbd>Alt</kbd> (<kbd>Option</kbd> on Mac) and click any component to copy its name for a
+      bug report, a ticket or an AI prompt. Badge colours adjust to the page behind them so they
+      stay readable.
+    </p>
+  </app-card>
+
+  <app-card title="Components on this page">
+    <p class="hint">
+      Every row is a component used on this page. Click a row to see how it is tagged.
+    </p>
+    <div cdoTag="Table" class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Component</th>
+            <th scope="col">Where it is</th>
+            <th scope="col">Tag</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track row.id) {
+            <tr
+              tabindex="0"
+              (click)="open(row, $event)"
+              (keydown.enter)="selected.set(row)"
+              (keydown.space)="selected.set(row); $event.preventDefault()"
+            >
+              <td>{{ row.name }}</td>
+              <td>{{ row.what }}</td>
+              <td><app-status-badge [status]="row.status" /></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+
+  <app-card title="Usage">
+    <div id="usage">
+      <p class="prose">
+        Every piece of the screen has a name in the code. When you use that name in Slack, a ticket
+        or a review, the developer knows exactly what you mean. No screenshot, no guessing, no back
+        and forth.
+      </p>
+      <p class="prose">
+        It also helps product owners, QA testers and other non-technical teammates communicate
+        clearly with developers, and gives them a small look at how the screen is built.
+      </p>
+      <ol class="usage__steps">
+        <li>Switch on Component details in the bottom-right corner.</li>
+        <li>Find the badge on the thing you mean. The badge is its name.</li>
+        <li>
+          Alt-click it (Option-click on Mac) to copy the name, then paste it into your message. If
+          it sits inside another component, add that first, like <code>Card › Button</code>.
+        </li>
+      </ol>
+      <div class="usage__examples">
+        <app-card title="Vague">
+          <p class="usage__quote">“The pill in that table looks off on mobile.”</p>
+        </app-card>
+        <app-card title="Clear">
+          <p class="usage__quote">
+            “<code>Table › StatusBadge</code> is cut off at 320px on /customers.”
+          </p>
+        </app-card>
+      </div>
+      <p class="prose">
+        No badge on something? It is untagged, so say that: “the banner on /customers is untagged.”
+        A developer will know to look at it.
+      </p>
+    </div>
+  </app-card>
+</div>
+
+<app-modal [title]="selected()?.name ?? ''" [open]="!!selected()" (closed)="selected.set(null)">
+  @if (selected(); as row) {
+    <p>{{ row.what }}.</p>
+    <pre class="modal__code"><code>{{ row.code }}</code></pre>
+  }
+  <p class="demo-note demo-note--inline">
+    <strong>Demo only</strong>
+    This modal sits on its own layer above the page. It is here to show the overlay labelling
+    elements on any layer and cutting its outlines away behind the dialog.
+  </p>
+</app-modal>
+
+<cdo-toggle position="bottom-right" [description]="offText" />
+<cdo-overlay />

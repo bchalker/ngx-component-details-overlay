@@ -1,0 +1,34 @@
+{
+  "name": "ngx-component-details-overlay",
+  "version": "0.1.0",
+  "description": "A dev-only Angular overlay that shows each tagged component's name on the live page.",
+  "license": "MIT",
+  "author": "Bryan Chalker",
+  "homepage": "https://github.com/bchalker/ngx-component-details-overlay#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bchalker/ngx-component-details-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bchalker/ngx-component-details-overlay/issues"
+  },
+  "keywords": [
+    "angular",
+    "overlay",
+    "design-system",
+    "devtools",
+    "audit",
+    "accessibility",
+    "claude-code",
+    "cursor",
+    "ai-coding"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

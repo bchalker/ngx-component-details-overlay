@@ -1,0 +1,117 @@
+@use 'tokens' as *;
+
+// Layer
+
+.cdo-layer {
+  // Resolved copies the script reads to estimate badge sizes.
+  --_cdo-badge-height: #{v('badge-height')};
+  --_cdo-badge-font-size: #{v('badge-font-size')};
+  --_cdo-badge-padding-x: #{v('badge-padding-x')};
+  --_cdo-badge-opacity: #{v('badge-opacity')};
+
+  position: fixed;
+  inset: 0;
+  z-index: v('z-index');
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+
+.cdo-box {
+  --_cdo-color: #{v('color-1')};
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  outline: v('outline-width') v('outline-style') var(--_cdo-color);
+  outline-offset: calc(-1 * #{v('outline-width')});
+  pointer-events: none;
+}
+
+@for $i from 1 through 5 {
+  .cdo-depth-#{$i} {
+    --_cdo-color: #{v('color-#{$i}')};
+  }
+}
+
+.cdo-box--hovered {
+  z-index: 1;
+  outline-style: solid;
+  outline-width: v('outline-hover-width');
+  outline-offset: calc(-1 * #{v('outline-hover-width')});
+}
+
+.cdo-badge {
+  position: absolute;
+  left: v('badge-offset-x');
+  margin-top: v('badge-offset-y');
+  box-sizing: border-box;
+  height: calc(#{v('badge-height')} * var(--_cdo-scale, 1));
+  padding: 0 calc(#{v('badge-padding-x')} * var(--_cdo-scale, 1));
+  font-family: v('badge-font-family');
+  font-size: calc(#{v('badge-font-size')} * var(--_cdo-scale, 1));
+  font-weight: v('badge-font-weight');
+  line-height: calc(#{v('badge-height')} * var(--_cdo-scale, 1));
+  letter-spacing: 0.01em;
+  color: var(--_cdo-text, #{v('badge-text-color')});
+  background: var(--_cdo-color);
+  border-radius: v('badge-radius');
+  white-space: nowrap;
+  opacity: v('badge-opacity');
+  pointer-events: none;
+  user-select: none;
+}
+
+.cdo-box--hovered > .cdo-badge {
+  opacity: 1;
+  box-shadow: v('badge-shadow');
+}
+
+.cdo-layer--hover-only .cdo-badge {
+  display: none;
+}
+
+.cdo-layer--hover-only .cdo-box--hovered > .cdo-badge {
+  display: block;
+}
+
+// High contrast: solid black badges with a white edge, thicker solid outlines.
+.cdo-layer--contrast {
+  .cdo-box {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: -2px;
+  }
+
+  .cdo-badge {
+    color: #fff;
+    background: #000;
+    opacity: 1;
+    box-shadow: inset 0 0 0 1px #fff;
+  }
+}
+
+// Text for screen readers only.
+.cdo-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Forced-colour modes: borders keep the badges visible.
+@media (forced-colors: active) {
+  .cdo-badge {
+    border: 1px solid CanvasText;
+  }
+
+  .cdo-box {
+    outline-color: Highlight;
+  }
+}
